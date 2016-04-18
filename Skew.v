@@ -46,6 +46,8 @@ Fixpoint ones n :=
  | S n => 2 * ones n + 1
  end.
 
+(*Axiom not_null_ones n : *) 
+
 (** Some properties of [ones] *)
 
 Lemma ones_pow n : ones n = 2^n-1.
@@ -53,15 +55,15 @@ Proof.
 induction n.
  - simpl. reflexivity.
  - Admitted.
-(* - induction n.
-    * simpl. reflexivity.
-    * .*)
 
 
 
 Lemma ones_pos n : 0 < n -> 0 < ones n.
 Proof.
-Admitted.
+intros. induction H.
+ - simpl. firstorder.
+ - rewrite IHle. simpl. firstorder.
+Qed.
 
 Lemma ones_le_mono n m : n <= m -> ones n <= ones m.
 Proof.
