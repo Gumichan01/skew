@@ -50,7 +50,14 @@ Fixpoint ones n :=
 
 Lemma ones_pow n : ones n = 2^n-1.
 Proof.
-Admitted.
+induction n.
+ - simpl. reflexivity.
+ - Admitted.
+(* - induction n.
+    * simpl. reflexivity.
+    * .*)
+
+
 
 Lemma ones_pos n : 0 < n -> 0 < ones n.
 Proof.
