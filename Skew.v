@@ -54,7 +54,7 @@ Lemma ones_pow n : ones n = 2^n-1.
 Proof.
 induction n.
  - simpl. reflexivity.
- - Admitted.
+ - simpl. rewrite IHn. Admitted.
 
 
 
