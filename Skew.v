@@ -67,7 +67,10 @@ Qed.
 
 Lemma ones_le_mono n m : n <= m -> ones n <= ones m.
 Proof.
-Admitted.
+intros. induction H.
+ - firstorder.
+ - rewrite IHle. simpl. firstorder.
+Qed.
 
 Lemma ones_lt_mono n m : n < m -> ones n < ones m.
 Proof.
