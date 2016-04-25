@@ -94,7 +94,10 @@ Fixpoint sum_ones l :=
 Lemma sum_ones_app l l' :
  sum_ones (l++l') = sum_ones l + sum_ones l'.
 Proof.
-Admitted.
+induction l.
+ - simpl. reflexivity.
+ - simpl. rewrite IHl. firstorder.
+Qed.
 
 Lemma sum_ones_rev l :
   sum_ones (rev l) = sum_ones l.
