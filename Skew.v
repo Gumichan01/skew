@@ -99,10 +99,15 @@ induction l.
  - simpl. rewrite IHl. firstorder.
 Qed.
 
+
+
 Lemma sum_ones_rev l :
   sum_ones (rev l) = sum_ones l.
 Proof.
-Admitted.
+induction l.
+ - simpl. reflexivity.
+ - simpl. rewrite sum_ones_app. simpl. firstorder.
+Qed.
 
 
 
