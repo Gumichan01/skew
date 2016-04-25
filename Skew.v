@@ -74,7 +74,10 @@ Qed.
 
 Lemma ones_lt_mono n m : n < m -> ones n < ones m.
 Proof.
-Admitted.
+intros. induction H.
+ - simpl. firstorder.
+ - rewrite IHle. simpl. firstorder.
+Qed.
 
 
 (** [sum_ones [a;b;...]] is the sum [(2^a-1)+(2^b-1)+...].
