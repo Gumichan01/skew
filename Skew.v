@@ -57,7 +57,6 @@ induction n.
  - simpl. rewrite IHn. Admitted.
 
 
-
 Lemma ones_pos n : 0 < n -> 0 < ones n.
 Proof.
 intros. induction H.
@@ -68,7 +67,7 @@ Qed.
 Lemma ones_le_mono n m : n <= m -> ones n <= ones m.
 Proof.
 intros. induction H.
- - firstorder.
+ - reflexivity.
  - rewrite IHle. simpl. firstorder.
 Qed.
 
@@ -98,7 +97,6 @@ induction l.
  - simpl. reflexivity.
  - simpl. rewrite IHl. firstorder.
 Qed.
-
 
 
 Lemma sum_ones_rev l :
