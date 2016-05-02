@@ -54,7 +54,8 @@ Lemma ones_pow n : ones n = 2^n-1.
 Proof.
 induction n.
  - simpl. reflexivity.
- - simpl. rewrite IHn. Admitted.
+ - simpl. rewrite IHn. admit.
+Qed.
 
 
 Lemma ones_pos n : 0 < n -> 0 < ones n.
@@ -108,7 +109,7 @@ induction l.
 Qed.
 
 
-
+(* Je galère à partir d'içi *)
 (** *** Canonical decompositons *)
 
 (** Not all decompositions of [n] are interesting. For instance,
@@ -140,15 +141,29 @@ Proof.
  auto.
 Qed.
 
+Eval compute in Incr ([1]).
+Eval compute in Skew ([1]).
+Eval compute in Incr (1::3::[5]).
+Eval compute in Skew (1::3::[5]).
+Eval compute in Incr (1::2::[5]).
+
 (** Some properties of the [Skew] and [Incr] predicates *)
+
 
 Lemma Incr_Skew m l : Incr (m::l) -> 0 < m -> Skew (m::l).
 Proof.
-Admitted.
+intros. induction l.
+ - auto.
+ - Admitted.
+
+
 
 Lemma Skew_inv n l : Skew (n::l) -> Skew l.
 Proof.
-Admitted.
+intros. induction l.
+ - auto.
+ - Admitted.
+
 
 (** The main result is now that any natural number admits one
     and only one canonical skew binary decomposition. *)
@@ -173,11 +188,16 @@ Definition next l :=
 
 Lemma next_sum l : sum_ones (next l) = S (sum_ones l).
 Proof.
-Admitted.
+induction l.
+ - simpl. reflexivity.
+ - Admitted.
+
 
 Lemma next_skew l : Skew l -> Skew (next l).
 Proof.
-Admitted.
+intros. induction l.
+ - simpl. auto.
+ - Admitted.
 
 (** So the decomposition of [n] is obtained by repeating
     [n] times the [next] function. *)
@@ -188,18 +208,36 @@ Fixpoint iter_next n :=
  | S n => next (iter_next n)
  end.
 
+
+Eval compute in next (iter_next 0).
+
+Eval compute in iter_next 1.
+Eval compute in iter_next 2.
+Eval compute in iter_next 3.
+Eval compute in iter_next 4.
+
+
 Lemma iter_next_sum n : sum_ones (iter_next n) = n.
 Proof.
+induction n.
+ - simpl. reflexivity.
+ - simpl.
 Admitted.
 
 Lemma iter_next_skew n : Skew (iter_next n).
 Proof.
+induction n.
+ - simpl. auto.
+ - simpl.
 Admitted.
 
 (** Hence the existence statement: *)
 
 Lemma decomp_exists : forall n, exists l, sum_ones l = n /\ Skew l.
 Proof.
+intros. simpl. induction n.
+ - exists []. simpl. firstorder.
+ - 
 Admitted.
 
 
@@ -234,6 +272,9 @@ Hint Constructors Weks Decr.
 Lemma Incr_last l n m :
   Incr (l ++ [n]) -> n < m -> Incr (l++[n;m]).
 Proof.
+intros. induction l.
+ - simpl. auto.
+ - simpl.
 Admitted.
 
 Lemma Decr_last l n m :
