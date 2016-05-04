@@ -109,7 +109,6 @@ induction l.
 Qed.
 
 
-(* Je galère à partir d'içi *)
 (** *** Canonical decompositons *)
 
 (** Not all decompositions of [n] are interesting. For instance,
@@ -141,8 +140,8 @@ Proof.
  auto.
 Qed.
 
-(** Some properties of the [Skew] and [Incr] predicates *)
 
+(** Some properties of the [Skew] and [Incr] predicates *)
 
 Lemma Incr_Skew m l : Incr (m::l) -> 0 < m -> Skew (m::l).
 Proof. 
@@ -161,7 +160,6 @@ Qed.
 
 (** The main result is now that any natural number admits one
     and only one canonical skew binary decomposition. *)
-
 
 
 (** *** Existence *)
@@ -190,9 +188,11 @@ induction l.
 
 Lemma next_skew l : Skew l -> Skew (next l).
 Proof.
-intros. induction l.
+inversion 1. subst.
  - simpl. auto.
- - Admitted.
+ - simpl. auto.
+ - subst. 
+Admitted.
 
 
 (** So the decomposition of [n] is obtained by repeating
@@ -205,20 +205,12 @@ Fixpoint iter_next n :=
  end.
 
 
-Eval compute in next (iter_next 0).
-
-Eval compute in iter_next 1.
-Eval compute in iter_next 2.
-Eval compute in iter_next 3.
-Eval compute in iter_next 4.
-
-
 Lemma iter_next_sum n : sum_ones (iter_next n) = n.
 Proof.
 induction n.
  - simpl. reflexivity.
- - 
-Admitted.
+ - simpl. rewrite !next_sum. f_equal. assumption. 
+Qed.
 
 Lemma iter_next_skew n : Skew (iter_next n).
 Proof.
@@ -233,7 +225,7 @@ Lemma decomp_exists : forall n, exists l, sum_ones l = n /\ Skew l.
 Proof.
 induction n.
  - exists []. simpl. firstorder.
- - 
+ -
 Admitted.
 
 
@@ -263,34 +255,27 @@ Inductive Decr : list nat -> Prop :=
 Hint Constructors Weks Decr.
 
 
-Eval compute in Weks [3;1;2].
-Eval compute in Incr ([4;3] ++ [2;1]).
-
 (** Let's now prove equivalences between [Skew] and [Weks]. *)
 
 Lemma Incr_last l n m :
   Incr (l ++ [n]) -> n < m -> Incr (l++[n;m]).
 Proof.
-induction l.
- - simpl. auto.
- - simpl in *.
 Admitted.
 
 
 Lemma Decr_last l n m :
  Decr (l++[n]) -> m < n -> Decr (l++[n;m]).
 Proof.
- induction l.
- - simpl. auto.
- - simpl in *.
 Admitted.
 
 Lemma Incr_Decr l : Incr l -> Decr (rev l).
 Proof.
-induction l.
- - simpl. trivial.
- - simpl in *.
+inversion 1.
+ - auto.
+ - subst. simpl. auto.
+ - subst. simpl. 
 Admitted.
+
 
 Lemma Skew_last l n m :
   Skew (l++[n]) -> n < m -> Skew (l++[n;m]).
@@ -312,9 +297,7 @@ Admitted.
 
 Lemma Weks_pos n l : Weks (n::l) -> 0 < n.
 Proof.
-induction l.
- - intro. simpl in *. admit.
- - rewrite Weks_Skew.
+inv.
 Admitted.
 
 (** The key property : a canonical decomposition with [n] as
