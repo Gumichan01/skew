@@ -54,7 +54,7 @@ Lemma ones_pow n : ones n = 2^n-1.
 Proof.
 induction n.
  - simpl. reflexivity.
- - simpl. rewrite IHn. admit.
+ - simpl. rewrite IHn. rewrite <- !plus_n_O. admit.
 Qed.
 
 
@@ -141,28 +141,22 @@ Proof.
  auto.
 Qed.
 
-Eval compute in Incr ([1]).
-Eval compute in Skew ([1]).
-Eval compute in Incr (1::3::[5]).
-Eval compute in Skew (1::3::[5]).
-Eval compute in Incr (1::2::[5]).
-
 (** Some properties of the [Skew] and [Incr] predicates *)
 
 
 Lemma Incr_Skew m l : Incr (m::l) -> 0 < m -> Skew (m::l).
-Proof.
-intros. induction l.
- - auto.
- - Admitted.
-
+Proof. 
+inv.
+Qed.
 
 
 Lemma Skew_inv n l : Skew (n::l) -> Skew l.
 Proof.
-intros. induction l.
+inv. 
+apply Incr_Skew. 
+ - assumption. 
  - auto.
- - Admitted.
+Qed.
 
 
 (** The main result is now that any natural number admits one
@@ -318,6 +312,9 @@ Admitted.
 
 Lemma Weks_pos n l : Weks (n::l) -> 0 < n.
 Proof.
+induction l.
+ - intro. simpl in *. admit.
+ - rewrite Weks_Skew.
 Admitted.
 
 (** The key property : a canonical decomposition with [n] as
@@ -328,6 +325,9 @@ Admitted.
 Lemma sum_ones_bound n l :
   Weks (n::l) -> sum_ones (n::l) < ones (S n).
 Proof.
+simpl. induction l.
+ - simpl. firstorder.
+ - simpl.
 Admitted.
 
 Lemma decomp_unique_weks l l' : Weks l -> Weks l' ->
