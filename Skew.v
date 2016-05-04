@@ -298,20 +298,27 @@ Admitted.
 Lemma Weks_pos n l : Weks (n::l) -> 0 < n.
 Proof.
 inv.
-Admitted.
+Qed.
 
 (** The key property : a canonical decomposition with [n] as
     largest factor cannot exceed [ones (S n)].
     Hence two decompositions with the same sum will have the
     same largest factors. *)
 
+
+(* Sum witout parenthesis *)
+Lemma aux_sum2 n m l : ones n + (ones m + sum_ones l) = ones n + ones m + sum_ones l.
+Proof.
+auto.
+Qed.
+
+
 Lemma sum_ones_bound n l :
   Weks (n::l) -> sum_ones (n::l) < ones (S n).
 Proof.
-simpl. induction l.
- - simpl. firstorder.
- - simpl.
+inv. rewrite <- plus_n_O. rewrite aux_sum2. simpl.
 Admitted.
+
 
 Lemma decomp_unique_weks l l' : Weks l -> Weks l' ->
  sum_ones l = sum_ones l' -> l = l'.
