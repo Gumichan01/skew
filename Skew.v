@@ -50,11 +50,18 @@ Fixpoint ones n :=
 
 (** Some properties of [ones] *)
 
+Lemma aux_pow_sum n : 2 ^ n - 1 + (2 ^ n - 1) + 1 = 2 ^ n + 2 ^ n - 1.
+Proof.
+induction n.
+ - simpl. reflexivity.
+ - simpl. rewrite <- !plus_n_O. firstorder.
+Qed.
+
 Lemma ones_pow n : ones n = 2^n-1.
 Proof.
 induction n.
  - simpl. reflexivity.
- - simpl. rewrite IHn. rewrite <- !plus_n_O. admit.
+ - simpl. rewrite IHn. rewrite <- !plus_n_O. rewrite aux_pow_sum. reflexivity.
 Qed.
 
 
