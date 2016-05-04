@@ -186,6 +186,7 @@ Definition next l :=
   | _ => 1::l
   end.
 
+
 Lemma next_sum l : sum_ones (next l) = S (sum_ones l).
 Proof.
 induction l.
@@ -198,6 +199,7 @@ Proof.
 intros. induction l.
  - simpl. auto.
  - Admitted.
+
 
 (** So the decomposition of [n] is obtained by repeating
     [n] times the [next] function. *)
@@ -221,25 +223,24 @@ Lemma iter_next_sum n : sum_ones (iter_next n) = n.
 Proof.
 induction n.
  - simpl. reflexivity.
- - simpl.
+ - 
 Admitted.
 
 Lemma iter_next_skew n : Skew (iter_next n).
 Proof.
 induction n.
  - simpl. auto.
- - simpl.
+ -
 Admitted.
 
 (** Hence the existence statement: *)
 
 Lemma decomp_exists : forall n, exists l, sum_ones l = n /\ Skew l.
 Proof.
-intros. simpl. induction n.
+induction n.
  - exists []. simpl. firstorder.
  - 
 Admitted.
-
 
 
 
@@ -267,23 +268,34 @@ Inductive Decr : list nat -> Prop :=
 
 Hint Constructors Weks Decr.
 
+
+Eval compute in Weks [3;1;2].
+Eval compute in Incr ([4;3] ++ [2;1]).
+
 (** Let's now prove equivalences between [Skew] and [Weks]. *)
 
 Lemma Incr_last l n m :
   Incr (l ++ [n]) -> n < m -> Incr (l++[n;m]).
 Proof.
-intros. induction l.
+induction l.
  - simpl. auto.
- - simpl.
+ - simpl in *.
 Admitted.
+
 
 Lemma Decr_last l n m :
  Decr (l++[n]) -> m < n -> Decr (l++[n;m]).
 Proof.
+ induction l.
+ - simpl. auto.
+ - simpl in *.
 Admitted.
 
 Lemma Incr_Decr l : Incr l -> Decr (rev l).
 Proof.
+induction l.
+ - simpl. trivial.
+ - simpl in *.
 Admitted.
 
 Lemma Skew_last l n m :
