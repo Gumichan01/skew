@@ -54,7 +54,7 @@ Lemma aux_pow_sum n : 2 ^ n - 1 + (2 ^ n - 1) + 1 = 2 ^ n + 2 ^ n - 1.
 Proof.
 induction n.
  - simpl. reflexivity.
- - simpl. rewrite <- !plus_n_O. firstorder.
+ - simpl. rewrite <- !plus_n_O. rewrite <- IHn. firstorder.
 Qed.
 
 Lemma ones_pow n : ones n = 2^n-1.
@@ -518,13 +518,28 @@ Lemma size_ones n (t : tree n) : size t = ones n.
 Proof.
 induction t.
  - simpl. reflexivity.
- - simpl. rewrite <- plus_n_O. rewrite IHt1. rewrite IHt2. . 
-Admitted.
+ - simpl. rewrite <- plus_n_O. rewrite IHt1. rewrite IHt2. 
+   rewrite succ_plus. reflexivity. 
+Qed.
+
+
+Lemma length_concat (l l' : list A) : length (l ++ l') = length l + length l'.
+Proof.
+induction l.
+ - simpl. reflexivity.
+ - simpl. f_equal. assumption.
+Qed.
+
 
 Lemma length_tree_to_list d (t:tree d) :
  length (tree_to_list t) = size t.
 Proof.
-Admitted.
+induction t.
+ - simpl. reflexivity.
+ - simpl. rewrite <- IHt1. rewrite <- IHt2. f_equal. 
+   rewrite length_concat. reflexivity.
+Qed.
+
 
 Lemma length_to_list l :
  length (to_list l) = skew_length l.
