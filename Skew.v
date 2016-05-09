@@ -194,7 +194,8 @@ induction l.
 
 
 Lemma next_skew l : Skew l -> Skew (next l).
-Proof.
+Proof. 
+(*intros.induction l. simpl. auto. simpl.*)
 inversion 1. subst.
  - simpl. auto.
  - simpl. auto.
@@ -478,7 +479,8 @@ Definition empty : skewlist := nil.
 
 Lemma empty_invariant : SkewList empty.
 Proof.
-Admitted.
+auto.
+Qed.
 
 (** *** Conversion from skewlist to regular list *)
 
@@ -503,8 +505,20 @@ Fixpoint size {d} (t:tree d) :=
   | Node _ a tl tr => 1 + size tl + size tr
   end.
 
+
+Lemma succ_plus (n : nat) : S (ones n + ones n) = ones n + ones n + 1.
+Proof.
+induction n.
+ - simpl. reflexivity.
+ - simpl. rewrite <- plus_n_O. rewrite <- IHn. firstorder.
+Qed. 
+
+
 Lemma size_ones n (t : tree n) : size t = ones n.
 Proof.
+induction t.
+ - simpl. reflexivity.
+ - simpl. rewrite <- plus_n_O. rewrite IHt1. rewrite IHt2. . 
 Admitted.
 
 Lemma length_tree_to_list d (t:tree d) :
