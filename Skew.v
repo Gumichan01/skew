@@ -188,19 +188,29 @@ Definition next l :=
 
 Lemma next_sum l : sum_ones (next l) = S (sum_ones l).
 Proof.
-induction l.
- - simpl. reflexivity.
- - Admitted.
+destruct l; simpl; auto.
+destruct l; simpl; auto.
+case Nat.eqb_spec.
+ - intro. rewrite e. simpl. rewrite <- plus_n_O. firstorder.
+ - intro. simpl. f_equal.
+Qed.
+
+
+(* Auxiliary lemma *)
+Lemma aux_next n l : Incr(n::l) -> Skew(S n ::l).
+Proof.
+inv.
+Qed.
 
 
 Lemma next_skew l : Skew l -> Skew (next l).
-Proof. 
-(*intros.induction l. simpl. auto. simpl.*)
-inversion 1. subst.
- - simpl. auto.
- - simpl. auto.
- - subst. 
-Admitted.
+Proof.
+inv. case Nat.eqb_spec.
+(*Je ne parviens pas à prouver ce cas.*)
+ - intro. subst; firstorder. apply aux_next. assumption.
+ - intro. firstorder.
+Qed.
+
 
 
 (** So the decomposition of [n] is obtained by repeating
