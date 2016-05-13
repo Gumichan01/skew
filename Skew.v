@@ -234,8 +234,8 @@ Lemma iter_next_skew n : Skew (iter_next n).
 Proof.
 induction n.
  - simpl. auto.
- -
-Admitted.
+ - simpl. apply next_skew; assumption.
+Qed.
 
 (** Hence the existence statement: *)
 
