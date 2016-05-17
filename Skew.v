@@ -158,6 +158,9 @@ Qed.
 
 Lemma Skew_inv n l : Skew (n::l) -> Skew l.
 Proof.
+(*induction l.
+ - auto.
+ - destruct l. inv. inv. apply Incr_Skew. assumption. auto.*)
 inv. 
 apply Incr_Skew. 
  - assumption. 
@@ -241,6 +244,8 @@ Qed.
 
 Lemma decomp_exists : forall n, exists l, sum_ones l = n /\ Skew l.
 Proof.
+(*intros. exists (iter_next n). split.
+apply iter_next_sum. apply iter_next_skew. Qed.*)
 induction n.
  - exists []. simpl. firstorder.
  - exists [2]. simpl. split.
@@ -282,7 +287,8 @@ Lemma Incr_last l n m :
 Proof.
 intros. induction l.
  - simpl. auto.
- - simpl in *. admit. (* Il y a un truc qui manque *)
+ - simpl in *. destruct l. simpl in *. inversion H. subst. auto.
+ simpl in *. inversion H. subst. auto.  (* Il y a un truc qui manque *)
 Admitted.
 
 
@@ -304,13 +310,15 @@ Qed.
 
 Lemma Incr_Decr l : Incr l -> Decr (rev l).
 Proof.
-inversion 1.
+induction 1.
  - auto.
  - subst. simpl. auto.
- - subst. simpl. rewrite aux_incr_decr. apply Decr_last. 
+ - subst. simpl in  *. rewrite aux_incr_decr. apply Decr_last. auto. auto.
+(*   change (Decr (rev (m::l0))). 
   + admit. 
   + assumption.
-Admitted.
+Admitted.*)
+Qed.
 
 
 Lemma Skew_last l n m :
@@ -574,8 +582,10 @@ Lemma length_to_list l :
 Proof.
 induction l.
  - simpl; auto.
- - admit.
-Admitted.
+ - destruct a. simpl. rewrite length_concat, IHl, length_tree_to_list,size_ones. 
+ unfold skew_length. simpl. reflexivity.
+Qed.
+
 
 
 (** *** A adhoc induction principle on two trees of same depth *)
@@ -623,6 +633,13 @@ Definition tree_ind2 (P : forall {n}, tree n -> tree n -> Prop)
 Lemma tree_unique n (t t' : tree n) :
  tree_to_list t = tree_to_list t' -> t = t'.
 Proof.
+apply tree_ind2 with (P:=fun n (t t' : tree n) => tree_to_list t = tree_to_list t' -> t = t').
+ - simpl. auto.
+ - intros; simpl in *. injection H1. intros. apply app_inv in H2. destruct H2.
+   f_equal; auto.
+   rewrite !length_tree_to_list, !size_ones. auto.
+Qed.
+
 intro. auto. (* Ne passe pas... *)
 admit.
 Admitted.
