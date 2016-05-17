@@ -243,7 +243,9 @@ Lemma decomp_exists : forall n, exists l, sum_ones l = n /\ Skew l.
 Proof.
 induction n.
  - exists []. simpl. firstorder.
- -
+ - exists [2]. simpl. split.
+  + firstorder. rewrite <- H. f_equal. rewrite H. admit.
+  + auto.
 Admitted.
 
 
@@ -278,6 +280,9 @@ Hint Constructors Weks Decr.
 Lemma Incr_last l n m :
   Incr (l ++ [n]) -> n < m -> Incr (l++[n;m]).
 Proof.
+intros. induction l.
+ - simpl. auto.
+ - simpl in *. admit.
 Admitted.
 
 
@@ -286,12 +291,22 @@ Lemma Decr_last l n m :
 Proof.
 Admitted.
 
+
+Lemma aux_incr_decr (n m : nat) l: (l ++ [m]) ++ [n] = l ++ [m;n].
+Proof.
+induction l.
+ - simpl. reflexivity.
+ - simpl. f_equal. assumption.
+Qed.
+
 Lemma Incr_Decr l : Incr l -> Decr (rev l).
 Proof.
 inversion 1.
  - auto.
  - subst. simpl. auto.
- - subst. simpl. 
+ - subst. simpl. rewrite aux_incr_decr. apply Decr_last. 
+  + admit. 
+  + assumption.
 Admitted.
 
 
