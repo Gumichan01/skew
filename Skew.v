@@ -282,16 +282,19 @@ Lemma Incr_last l n m :
 Proof.
 intros. induction l.
  - simpl. auto.
- - simpl in *. admit.
+ - simpl in *. admit. (* Il y a un truc qui manque *)
 Admitted.
 
 
 Lemma Decr_last l n m :
  Decr (l++[n]) -> m < n -> Decr (l++[n;m]).
 Proof.
+intros. induction l.
+ - simpl. auto.
+ - simpl in *. admit. (* Il y a aussi un truc qui manque *)
 Admitted.
 
-
+(* Lemme intermédiaire qui ne m'aide pas beaucoup *)
 Lemma aux_incr_decr (n m : nat) l: (l ++ [m]) ++ [n] = l ++ [m;n].
 Proof.
 induction l.
@@ -569,6 +572,9 @@ Qed.
 Lemma length_to_list l :
  length (to_list l) = skew_length l.
 Proof.
+induction l.
+ - simpl; auto.
+ - admit.
 Admitted.
 
 
@@ -617,11 +623,14 @@ Definition tree_ind2 (P : forall {n}, tree n -> tree n -> Prop)
 Lemma tree_unique n (t t' : tree n) :
  tree_to_list t = tree_to_list t' -> t = t'.
 Proof.
+intro. auto. (* Ne passe pas... *)
+admit.
 Admitted.
 
 Lemma skewlist_unique l l' : SkewList l -> SkewList l' ->
  to_list l = to_list l' -> l = l'.
 Proof.
+intros. admit.
 Admitted.
 
 
